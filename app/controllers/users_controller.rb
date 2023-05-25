@@ -7,10 +7,10 @@ class UsersController < ApplicationController
   def create
   
     @user = User.create(user_params)
-
     if @user.valid?
       token = encode_token({user_id: @user.id})
       render json: {user: @user, token: token}, status: :created
+
     else
       render json: {message: "Invalid username or password"}, status: :not_acceptable
     end
@@ -27,26 +27,8 @@ class UsersController < ApplicationController
     end
   end
   
-
-  def logout #make current token invalid
-    if current_user
-      @user = current_user
-      @user.update(token: nil)
-      render json: {message: "User Logged out."}, status: :accepted
-    else
-      render json: {message: "Invalid username or password"}, status: :not_acceptable
-    end
-
-  end
-  
   private
-
   def user_params
     params.require(:user).permit(:username, :password, :email)
   end
-
-  
-
-   
-
 end
