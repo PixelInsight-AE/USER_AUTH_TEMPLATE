@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
-  
+  def index
+    @users = User.all
+    render json: @users
+  end
+
   def create
+  
     @user = User.create(user_params)
 
     if @user.valid?
@@ -20,18 +25,27 @@ class UsersController < ApplicationController
     else
       render json: {message: "Invalid username or password"}, status: :not_acceptable
     end
+  end
+  
+
+  def logout #make current token invalid
+    if current_user
+      @user = current_user
+      @user.update(token: nil)
+      render json: {message: "User Logged out."}, status: :accepted
+    else
+      render json: {message: "Invalid username or password"}, status: :not_acceptable
+    end
 
   end
-
-  def logout
-  end
-
-
+  
   private
 
   def user_params
     params.require(:user).permit(:username, :password, :email)
   end
+
+  
 
    
 
