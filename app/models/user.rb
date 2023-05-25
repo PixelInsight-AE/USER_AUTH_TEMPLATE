@@ -3,7 +3,7 @@ class User < ApplicationRecord
   validates_uniqueness_of :username, :email
   validates :password, length: { minimum: 8 }
   
-
+  has_many :cards
   has_secure_password
 
 end
