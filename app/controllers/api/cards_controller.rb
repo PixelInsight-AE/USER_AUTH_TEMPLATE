@@ -1,52 +1,54 @@
-class CardsController < ApplicationController
-  before_action :authorize
-  before_action :set_card, only: %i[ show update destroy ]
+module Api
+  class CardsController < ApplicationController
+    before_action :authorize
+    before_action :set_card, only: %i[ show update destroy ]
 
 
-  # GET /cards
-  def index 
-    @cards = @user.cards.all
-    render json: @cards
-  end
-
-  # GET /cards/1
-  def show
-    render json: @card
-  end
-
-  # POST /cards
-  def create
-    @card = Card.new(card_params.merge(user: @user))
-
-    if @card.save
-      render json: @card, status: :created, location: @card
-    else
-      render json: @card.errors, status: :unprocessable_entity
+    # GET /cards
+    def index 
+      @cards = @user.cards.all
+      render json: @cards
     end
-  end
 
-  # PATCH/PUT /cards/1
-  def update
-    if @card.update(card_params)
+    # GET /cards/1
+    def show
       render json: @card
-    else
-      render json: @card.errors, status: :unprocessable_entity
     end
+
+    # POST /cards
+    def create
+      @card = Card.new(card_params.merge(user: @user))
+
+      if @card.save
+        render json: @card, status: :created, location: @card
+      else
+        render json: @card.errors, status: :unprocessable_entity
+      end
+    end
+
+    # PATCH/PUT /cards/1
+    def update
+      if @card.update(card_params)
+        render json: @card
+      else
+        render json: @card.errors, status: :unprocessable_entity
+      end
+    end
+
+    # DELETE /cards/1
+    def destroy
+      @card.destroy
+    end
+
+    private
+      # Use callbacks to share common setup or constraints between actions.
+      def set_card
+        @card = @user.cards.find(params[:id])
+      end
+
+      # Only allow a list of trusted parameters through.
+      def card_params
+        params.require(:card).permit(:name)
+      end
   end
-
-  # DELETE /cards/1
-  def destroy
-    @card.destroy
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_card
-      @card = @user.cards.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def card_params
-      params.require(:card).permit(:name)
-    end
 end
