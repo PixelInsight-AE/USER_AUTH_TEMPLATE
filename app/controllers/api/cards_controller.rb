@@ -4,10 +4,8 @@ class CardsController < ApplicationController
 
 
   # GET /cards
-  def index
-    
+  def index 
     @cards = @user.cards.all
-
     render json: @cards
   end
 

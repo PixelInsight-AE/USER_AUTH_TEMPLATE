@@ -1,20 +1,14 @@
 class ApplicationController < ActionController::API
-
+  use Rack::Attack
   def encode_token(payload)
     JWT.encode(payload, ENV['SECRET_KEY'])
   end
-  def current_user
-    if decoded_token
-      user_id = decoded_token[0]['user_id']
-      @user = User.find_by(id: user_id)
-      render json: {message: "User Logged in.",
-      user: @user}, status: :accepted
-    end
-  end
+  
 
   
 
   def decode_token
+    # Bearer <token>
     auth_header = request.headers['Authorization']
     if auth_header
       token = auth_header.split(' ')[1]
