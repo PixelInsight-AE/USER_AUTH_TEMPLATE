@@ -10,13 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_25_182800) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_183149) do
   create_table "cards", force: :cascade do |t|
     t.string "name"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_url"
+    t.string "description"
+    t.string "meaning_up"
+    t.string "meaning_rev"
+    t.string "astrology"
+    t.string "element"
+    t.string "numerology"
+    t.string "user_thoughts"
+    t.boolean "user_feeling"
+    t.boolean "major_minor"
     t.index ["user_id"], name: "index_cards_on_user_id"
+  end
+
+  create_table "tarots", force: :cascade do |t|
+    t.string "name"
+    t.string "image_url"
+    t.string "description"
+    t.string "meaning_up"
+    t.string "meaning_rev"
+    t.string "astrology"
+    t.string "element"
+    t.string "numerology"
+    t.string "user_thoughts"
+    t.boolean "user_feeling"
+    t.boolean "major_minor"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
