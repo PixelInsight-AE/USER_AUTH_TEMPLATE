@@ -1,6 +1,6 @@
 module Api
   class TarotsController < ApplicationController
-    
+    before_action :authorize
     before_action :set_tarot, only: %i[ show update destroy ]
 
     # GET /tarots
@@ -26,6 +26,13 @@ module Api
       end
     end
 
+
+    def random
+      @tarot = Tarot.all.sample
+      render json: @tarot
+    end
+
+
     # PATCH/PUT /tarots/1
     def update
       if @tarot.update(tarot_params)
@@ -48,7 +55,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def tarot_params
-        params.fetch(:tarot).permit(:name, :image_url, :description, :meaning_up, :meaning_rev, :astrology, :element, :numerology, :user_thoughts, :user_feeling, :major_minor)
+        params.require(:tarot).permit(:name, :image_url, :description, :meaning_up, :meaning_rev, :astrology, :element, :numerology, :user_thoughts, :user_feeling, :major_minor)
       end
   end
 end

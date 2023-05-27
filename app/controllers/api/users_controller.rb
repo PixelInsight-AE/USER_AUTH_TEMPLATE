@@ -10,6 +10,7 @@ module Api
       @user = User.create(user_params)
       if @user.valid?
         token = encode_token({user_id: @user.id})
+        #AccountMailer.notify(@user).deliver!
         render json: {user: @user, token: token}, status: :created
 
       else
